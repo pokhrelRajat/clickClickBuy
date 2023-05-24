@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 const port = 4000;
+app.use(cors());
 app.use(express.json());
 
 //------------------------- CREATING DATABASE CONNECTION -------------------------
@@ -23,7 +24,7 @@ connectToDb();
 //------------------------- CREATING SCHEMAS FOR DIFFERENT COLLECTIONS -------------------------
 const userSchema = new mongoose.Schema({
   fullName: String,
-  mobileNumber: Number,
+  phoneNumber: Number,
   password: String,
   role: String,
 });
@@ -33,7 +34,30 @@ const Users = mongoose.model("Users", userSchema);
 
 //------------------------- REGISTERING A NEW USER(C) -------------------------
 app.post("/register", async (req, res) => {
-  const data = await Users.create(req.body);
+  try {
+    const data = await Users.create(req.body);
+    if (data) {
+      res.json({ msg: "User Registration Successful" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const data = await Users.findOne({
+      phoneNumber: req.body.phoneNumber,
+      password: req.body.password,
+    });
+    if (data) {
+      res.json({ msg: "Login Successful" });
+    } else {
+      res.json({ msg: "Login Failed" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(port, () => {

@@ -1,8 +1,14 @@
 const Register = () => {
   return (
-    <div>
-      <h1>Hello I am Register Page</h1>hello
-    </div>
+    <>
+      <div>
+        <input placeholder="Full Name" />
+        <input placeholder="Phone Number" />
+        <input placeholder="Password" />
+        <input placeholder="Role" />
+        <button>Register</button>
+      </div>
+    </>
   );
 };
 
